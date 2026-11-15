@@ -4,14 +4,20 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import uk.ac.tees.mad.s3648758.screens.LandingScreen
+import uk.ac.tees.mad.s3648758.screens.LoginScreen
 import uk.ac.tees.mad.s3648758.ui.theme.CineQueueTheme
+import uk.ac.tees.mad.s3648758.view_models.UserViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,8 +26,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             CineQueueTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
+                    App(
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
@@ -31,17 +36,27 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
+fun App(modifier: Modifier = Modifier) {
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    CineQueueTheme {
-        Greeting("Android")
+    Column(modifier = modifier) {
+
+        val navController = rememberNavController()
+
+        val userViewModel: UserViewModel = viewModel()
+
+        NavHost(
+            navController = navController,
+
+            startDestination = if (userViewModel.isLoggedIn) "landing" else "login"
+        ) {
+
+            composable(route = "login") {
+                LoginScreen(navController, userViewModel)
+            }
+
+            composable(route = "landing") {
+                LandingScreen(navController, userViewModel)
+            }
+        }
     }
 }

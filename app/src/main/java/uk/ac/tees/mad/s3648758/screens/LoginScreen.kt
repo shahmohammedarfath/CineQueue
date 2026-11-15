@@ -21,24 +21,36 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
-import uk.ac.tees.mad.s3648758.data.AuthUiState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import kotlinx.coroutines.launch
+import uk.ac.tees.mad.s3648758.view_models.UserViewModel
 
 
 @Composable
 fun LoginScreen(
-    state: AuthUiState,
-    onSubmit: (username: String, password: String, isRegister: Boolean) -> Unit,
-    onInputChanged: () -> Unit
-) {
+//    state: AuthUiState,
+//    onSubmit: (username: String, password: String, isRegister: Boolean) -> Unit,
+//    onInputChanged: () -> Unit
+
+    navHostController: NavHostController,
+    userViewModel: UserViewModel,
+    modifier: Modifier = Modifier
+
+    ) {
+
+    val coroutineScope = rememberCoroutineScope()
+
     var username by rememberSaveable { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var isRegister by rememberSaveable { mutableStateOf(false) }
@@ -62,7 +74,7 @@ fun LoginScreen(
 
         OutlinedTextField(
             value = "username",
-            onValueChange = { username = it; onInputChanged},
+            onValueChange = { username = it; userViewModel.clearError()},
             label = { Text("Username")},
             singleLine = true,
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
@@ -72,7 +84,7 @@ fun LoginScreen(
 
         OutlinedTextField(
             value = password,
-            onValueChange = { password = it; onInputChanged},
+            onValueChange = { password = it; userViewModel.clearError()},
             label = { Text("Password") },
             singleLine = true,
             visualTransformation =
@@ -89,27 +101,58 @@ fun LoginScreen(
             modifier = Modifier.fillMaxWidth()
         )
 
-        state.error?.let {
-            Spacer(Modifier.height(12.dp))
-            Text(it, color = MaterialTheme.colorScheme.error)
+//        state.error?.let {
+//            Spacer(Modifier.height(12.dp))
+//            Text(it, color = MaterialTheme.colorScheme.error)
+//        }
+
+        if (userViewModel.errorMessage != null) {
+            Spacer(modifier = Modifier.height(12.dp))
+            Text(
+                text = userViewModel.errorMessage ?: "",
+                color = MaterialTheme.colorScheme.error
+            )
         }
 
         Spacer(Modifier.height(20.dp))
         Button(
-            onClick = { onSubmit(username, password, isRegister)},
-            enabled = !state.loading,
+            enabled = !userViewModel.isLoading,
+            onClick = {
+                coroutineScope.launch {
+                    val success = userViewModel.doAuth(username, password, isRegister)
+
+                    if (success) {
+                        navHostController.navigate("landing") {
+
+                            popUpTo("login") {inclusive = true}
+                        }
+                    }
+                }
+            },
             modifier = Modifier.fillMaxWidth()
         ) {
-            if (state.loading) {
+            if (userViewModel.isLoading) {
                 CircularProgressIndicator(Modifier.size(20.dp), strokeWidth = 2.dp)
             } else {
                 Text(if (isRegister) "Create account" else "Log in")
             }
         }
 
-        TextButton(onClick = { isRegister = !isRegister; onInputChanged}) {
+//        TextButton(onClick = { isRegister = !isRegister; onInputChanged}) {
+//            Text(
+//                if (isRegister) "Already have an account? Log in"
+//                else "New here? Create an account"
+//            )
+//        }
+
+        TextButton(
+            onClick = {
+                isRegister = !isRegister
+                userViewModel.clearError()
+            }
+        ) {
             Text(
-                if (isRegister) "Already have an account? Log in"
+                text = if (isRegister) "Already have an account? Log in"
                 else "New here? Create an account"
             )
         }
