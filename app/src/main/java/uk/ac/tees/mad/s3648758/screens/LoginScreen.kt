@@ -73,7 +73,7 @@ fun LoginScreen(
         Spacer(Modifier.height(24.dp))
 
         OutlinedTextField(
-            value = "username",
+            value = username,
             onValueChange = { username = it; userViewModel.clearError()},
             label = { Text("Username")},
             singleLine = true,

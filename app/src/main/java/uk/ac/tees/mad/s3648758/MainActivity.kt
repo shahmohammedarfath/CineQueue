@@ -14,6 +14,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import uk.ac.tees.mad.s3648758.screens.HomeScreen
 import uk.ac.tees.mad.s3648758.screens.LandingScreen
 import uk.ac.tees.mad.s3648758.screens.LoginScreen
 import uk.ac.tees.mad.s3648758.ui.theme.CineQueueTheme
@@ -56,6 +57,10 @@ fun App(modifier: Modifier = Modifier) {
 
             composable(route = "landing") {
                 LandingScreen(navController, userViewModel)
+            }
+
+            composable(route = "home") {
+                HomeScreen()
             }
         }
     }
