@@ -1,13 +1,24 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
     id("com.google.gms.google-services")
 }
 
+val localProps = Properties().apply {
+    val file = rootProject.file("local.properties")
+    if (file.exists()) file.inputStream().use { load(it) }
+}
+
 android {
     namespace = "uk.ac.tees.mad.s3648758"
     compileSdk {
         version = release(37)
+
+        buildFeatures{
+            buildConfig = true
+        }
     }
 
     defaultConfig {
@@ -18,6 +29,12 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField(
+            "String",
+            "TMDB_API_KEY",
+            "\"${localProps.getProperty("TMDB_API_KEY", "")}\""
+        )
     }
 
     buildTypes {
@@ -66,4 +83,11 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
     debugImplementation(libs.androidx.compose.ui.tooling)
+
+    // Source: https://mvnrepository.com/artifact/com.squareup.retrofit2/retrofit
+    implementation("com.squareup.retrofit2:retrofit:3.0.0")
+    // Source: https://mvnrepository.com/artifact/com.squareup.retrofit2/converter-gson
+    implementation("com.squareup.retrofit2:converter-gson:3.0.0")
+    // Source: https://mvnrepository.com/artifact/io.coil-kt.coil3/coil
+    implementation("io.coil-kt.coil3:coil:3.6.3")
 }
