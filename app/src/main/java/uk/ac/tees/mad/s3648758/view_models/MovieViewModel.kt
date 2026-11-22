@@ -6,8 +6,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.internal.VIEW_MODEL_SCOPE_KEY
-import com.google.firebase.BuildConfig
+import uk.ac.tees.mad.s3648758.BuildConfig
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -59,7 +58,7 @@ class MovieViewModel : ViewModel(){
 
     fun fetchTrending(apiKey: String = BuildConfig.TMDB_API_KEY) {
 
-        if (_titlesDataFlow.value.isNonEmpty()) return
+        if (_titlesDataFlow.value.isNotEmpty()) return
 
         _isLoadingFlow.value = true
         _errorMessageFlow.value = null

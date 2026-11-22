@@ -16,9 +16,6 @@ android {
     compileSdk {
         version = release(37)
 
-        buildFeatures{
-            buildConfig = true
-        }
     }
 
     defaultConfig {
@@ -49,6 +46,7 @@ android {
         targetCompatibility = JavaVersion.VERSION_11
     }
     buildFeatures {
+        buildConfig = true
         compose = true
     }
 }
