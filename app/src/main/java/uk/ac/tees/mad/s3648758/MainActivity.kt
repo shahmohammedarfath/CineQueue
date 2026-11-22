@@ -18,6 +18,7 @@ import uk.ac.tees.mad.s3648758.screens.HomeScreen
 import uk.ac.tees.mad.s3648758.screens.LandingScreen
 import uk.ac.tees.mad.s3648758.screens.LoginScreen
 import uk.ac.tees.mad.s3648758.ui.theme.CineQueueTheme
+import uk.ac.tees.mad.s3648758.view_models.MovieViewModel
 import uk.ac.tees.mad.s3648758.view_models.UserViewModel
 
 class MainActivity : ComponentActivity() {
@@ -45,6 +46,8 @@ fun App(modifier: Modifier = Modifier) {
 
         val userViewModel: UserViewModel = viewModel()
 
+        val movieViewModel: MovieViewModel = viewModel()
+
         NavHost(
             navController = navController,
 
@@ -56,7 +59,7 @@ fun App(modifier: Modifier = Modifier) {
             }
 
             composable(route = "landing") {
-                LandingScreen(navController, userViewModel)
+                LandingScreen(navController, userViewModel, movieViewModel)
             }
 
             composable(route = "home") {
