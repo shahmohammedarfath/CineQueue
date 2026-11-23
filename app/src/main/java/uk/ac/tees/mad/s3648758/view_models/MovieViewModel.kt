@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import uk.ac.tees.mad.s3648758.api.TmdbApiCall
 import uk.ac.tees.mad.s3648758.models.TmdbTitle
+import kotlin.collections.isNotEmpty
 
 class MovieViewModel : ViewModel(){
 

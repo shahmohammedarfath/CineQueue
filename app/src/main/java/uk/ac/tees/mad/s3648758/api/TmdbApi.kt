@@ -9,7 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
 import retrofit2.http.GET
 import retrofit2.http.Query
-import uk.ac.tees.mad.s3648758.models.TrendingResponse
+import uk.ac.tees.mad.s3648758.models.TmdbModels
 
 private val BASE_URL = "https://api.themoviedb.org/3/"
 

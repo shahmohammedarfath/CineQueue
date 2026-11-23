@@ -31,7 +31,7 @@ class UserViewModel: ViewModel() {
     )
         private set
 
-    private fun toEmail(name: String) = "${name.trimmedLength().lowercase()}@cinequeue.app"
+    private fun toEmail(name: String) = "${name.trim().lowercase()}@cinequeue.app"
 
     private fun validate(name: String, password: String): String? {
         if (!Regex("[A-Za-z0-9_.]{3,20}$").matches(name.trim()))

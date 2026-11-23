@@ -121,7 +121,7 @@ fun LoginScreen(
                     val success = userViewModel.doAuth(username, password, isRegister)
 
                     if (success) {
-                        navHostController.navigate("landing") {
+                        navHostController.navigate("home") {
 
                             popUpTo("login") {inclusive = true}
                         }
