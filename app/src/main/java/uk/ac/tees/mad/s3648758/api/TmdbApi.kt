@@ -6,7 +6,9 @@ import retrofit2.Callback
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
+import uk.ac.tees.mad.s3648758.models.TitleDetails
 import uk.ac.tees.mad.s3648758.models.TrendingResponse
 
 
@@ -19,6 +21,18 @@ interface TmdbApi {
     fun getTrending(
         @Query("api_key") apiKey: String
     ) : Call<TrendingResponse>
+
+    @GET("movie/{id}")
+    suspend fun getMovieDetails(
+        @Path("id") id: Int,
+        @Query("api_key") apiKey: String
+    ): Call<TitleDetails>
+
+    @GET("tv/{id}")
+    suspend fun getTvDetails(
+        @Path("id") id: Int,
+        @Query("api_key") apiKey: String
+    ): Call<TitleDetails>
 }
 
 class TmdbApiCall() {
