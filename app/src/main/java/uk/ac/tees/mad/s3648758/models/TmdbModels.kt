@@ -29,5 +29,5 @@ data class TmdbTitle(
         get() = (releaseDate ?: firstAirDate)?.take(4) ?: ""
 
     val posterUrl: String?
-        get() = posterPath?.let { "https://image.tmdb.org/t/p/w185\$it" }
+        get() = posterPath?.let { "https://image.tmdb.org/t/p/w185$it" }
 }

@@ -2,9 +2,7 @@ package uk.ac.tees.mad.s3648758.view_models
 
 
 import androidx.lifecycle.ViewModel
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
 import uk.ac.tees.mad.s3648758.BuildConfig
 import kotlinx.coroutines.Dispatchers
